@@ -1,0 +1,17 @@
+@import "~/src/scss/index.scss";
+
+.register-form{
+    &__avatar{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25em;
+
+        > .ui.image{
+            margin: 0;
+            border: 0.1 dashed $border;
+            padding: 0.5em;
+            cursor: pointer;
+        }
+    }
+}

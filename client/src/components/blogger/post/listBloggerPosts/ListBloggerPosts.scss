@@ -1,0 +1,18 @@
+
+.list-post{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3.75em;
+
+    &__button{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    &__pagination{
+        align-self: center;
+        margin-top: 2em;
+    }
+}

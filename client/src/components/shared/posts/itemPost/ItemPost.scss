@@ -1,0 +1,35 @@
+
+.item{
+    color: black;
+    width: 33.33%;
+    height: 33.33%;
+    
+    &:hover{
+        opacity: 0.6;
+    }
+
+    .ui.image{
+        border-radius: 20px;
+    }
+
+    .content{
+        padding-left: 0.5em;
+        padding-top: 0.5em;
+    }
+
+    .image{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    h2{
+        font-size: 1em;
+        margin: 0.5em 0 0 0;
+    }
+
+    h3{
+        opacity: 0.4;
+        font-size: 0.75em;
+    }
+}

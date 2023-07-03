@@ -1,0 +1,17 @@
+@import "~/src/scss/index.scss";
+
+.home-page{
+    margin: 30px;
+    padding-bottom: 30px;
+
+    &__header{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        >.ui.button{
+            background-color: $background;
+            color: $text-dark;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+@import "~/src/scss/index.scss";
+
+.auth{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6.25em;
+
+    &__forms{
+        width: 30%;
+
+        .ui.menu{
+            .item{
+                width: 50%;
+                justify-content: center;
+
+                font-size: 1.2em;
+
+                &.active{
+                    font-weight: normal;
+                    background-color: $background !important;
+                }
+            }
+        }
+    }
+}

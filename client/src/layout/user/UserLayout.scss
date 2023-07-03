@@ -1,0 +1,18 @@
+@import "~/src/scss/index.scss";
+
+.user-layout{
+    min-height: 100vh;
+    position: relative;
+
+    padding-bottom: 15.5em;
+
+    &__header{
+        width: 100%;
+    }
+
+    &__footer{
+       position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+}

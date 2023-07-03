@@ -1,0 +1,21 @@
+.profile{
+    height: 100%;
+
+    &-box{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+
+        &__content{
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .box-buttons{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }     
+    }
+}
