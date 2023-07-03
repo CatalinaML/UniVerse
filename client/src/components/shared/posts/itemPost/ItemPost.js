@@ -19,6 +19,7 @@ export function ItemPost(props) {
         <div className='content'>
           <h2>{post.title}</h2>
           <span>{formatDate}</span>
+          <span dangerouslySetInnerHTML={{__html: post.content}}></span>
 
           <div className='image'>
             <Image avatar src={`${ENV.BASE_PATH}/${post.avatar_author}`}/>

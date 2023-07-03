@@ -15,6 +15,23 @@
     .content{
         padding-left: 0.5em;
         padding-top: 0.5em;
+
+        >span{
+            &:first-of-type {
+            font-weight: bold;
+            font-size: 16px;
+          }
+          &:last-of-type {
+            opacity: 0.4;
+            font-size: 12px;
+            padding-top: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+          }
+        }
     }
 
     .image{
