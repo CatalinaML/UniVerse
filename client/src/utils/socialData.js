@@ -1,22 +1,22 @@
 export const socialData = [
     {
-      type: "youtube",
-      link: "",
+      type: "instagram",
+      link: "https://www.instagram.com/catyliste/",
     },
     {
       type: "twitter",
-      link: "",
+      link: "https://twitter.com/Catline55",
     },
     {
       type: "facebook",
-      link: "",
+      link: "https://www.facebook.com/kingcat61",
     },
     {
       type: "linkedin",
-      link: "",
+      link: "https://www.linkedin.com/in/catalina-milagros-liste/",
     },
     {
         type: "github",
-        link: ""
+        link: "https://github.com/CatalinaML"
     }
   ];
