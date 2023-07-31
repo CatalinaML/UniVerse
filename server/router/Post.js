@@ -3,13 +3,17 @@ const multipart = require("connect-multiparty");
 const postController = require("../controllers/Post");
 const md_auth = require("../middleware/authenticated");
 
-const md_uploads = multipart({uploadDir: "./uploads/post"});
+const md_uploads = multipart({ uploadDir: "./uploads/post" });
 
 const api = express.Router();
 
 //con autenticacion
 api.post("/post", [md_auth.asureAuth, md_uploads], postController.createPost);
-api.patch("/post/:id", [md_auth.asureAuth, md_uploads], postController.updatePost);
+api.patch(
+  "/post/:id",
+  [md_auth.asureAuth, md_uploads],
+  postController.updatePost
+);
 api.delete("/post/:id", [md_auth.asureAuth], postController.deletePost);
 api.post("/posts/:username", [md_auth.asureAuth], postController.getMyPosts);
 

@@ -11,6 +11,7 @@
         border-radius: 1.25em;
 
         &__info{
+            margin: 10px 0 20px 0;
             &-author{
                 display: flex;
                 align-items: center;
@@ -33,6 +34,13 @@
             }
         }
 
+        &__image{
+            >.ui.image{
+                width: 100%;
+                height: auto;
+            }
+        }
+
         &__content{
             width: 100%;
 
@@ -47,6 +55,10 @@
             &-date{
                 margin-bottom: 1.25em;
                 opacity: 0.6;
+            }
+
+            &-content{
+                text-align: justify;
             }
         
             &-like{

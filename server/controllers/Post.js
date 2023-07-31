@@ -3,243 +3,241 @@ const fs = require("fs").promises;
 const User = require("../models/User");
 
 //necesitan autenticacion
-async function createPost(req, res){
-    const {user_id} = req.user;
-    const {title, content} = req.body;
-    const today = new Date();
+async function createPost(req, res) {
+  const { user_id } = req.user;
+  const { title, content } = req.body;
+  const today = new Date();
 
-    const user = await User.findById(user_id);
+  const user = await User.findById(user_id);
 
-    const post = new Post({
-        title,
-        content,
-        create_date: today,
-        author: user.username,
-        avatar_author: user.avatar,
-        likes: [],
-    })
+  const post = new Post({
+    title,
+    content,
+    create_date: today,
+    author: user.username,
+    id_author: user_id,
+    avatar_author: user.avatar,
+    likes: [],
+  });
 
-    //imagen del post
-    if(req.files.miniature){
-        let imagePath = "";
+  //imagen del post
+  if (req.files.miniature) {
+    let imagePath = "";
 
-        if(req.files.miniature && req.files.miniature.size > 0){
-            const filePath = req.files.miniature.path;
-            const fileSplit = filePath.split("\\");
-        
-            imagePath = `${fileSplit[1]}/${fileSplit[2]}`;
-        }
+    if (req.files.miniature && req.files.miniature.size > 0) {
+      const filePath = req.files.miniature.path;
+      const fileSplit = filePath.split("\\");
 
-        if(imagePath){
-            post.miniature = imagePath;
-        }else{
-            post.miniature = null;
-            await fs.unlink(req.files.avatar.path); //Se me estaba guardando un archivo vacío igual, acá no prevengo que no se guarde, pero por lo menos lo borro
-        }
+      imagePath = `${fileSplit[1]}/${fileSplit[2]}`;
     }
 
-    try {
-        const response = await post.save();
-        res.status(200).send({msg: "Post creado"});
-    } catch (error) {
-        res.status(400).send({msg: "Error al crear post"});
+    if (imagePath) {
+      post.miniature = imagePath;
+    } else {
+      post.miniature = null;
+      await fs.unlink(req.files.avatar.path); //Se me estaba guardando un archivo vacío igual, acá no prevengo que no se guarde, pero por lo menos lo borro
     }
+  }
+
+  try {
+    await post.save();
+    res.status(200).send({ msg: "Post creado" });
+  } catch (error) {
+    res.status(400).send({ msg: "Error al crear post" });
+  }
 }
 
-async function updatePost(req, res){
-    const {id} = req.params;
-    const postData = req.body;
+async function updatePost(req, res) {
+  const { id } = req.params;
+  const postData = req.body;
 
-    //manejo de imagen
-    if(req.files.miniature){
-        let imagePath = "";
+  //manejo de imagen
+  if (req.files.miniature) {
+    let imagePath = "";
 
-        if(req.files.miniature && req.files.miniature.size > 0){
-            const filePath = req.files.miniature.path;
-            const fileSplit = filePath.split("\\");
-        
-            imagePath = `${fileSplit[1]}/${fileSplit[2]}`;
-        }
+    if (req.files.miniature && req.files.miniature.size > 0) {
+      const filePath = req.files.miniature.path;
+      const fileSplit = filePath.split("\\");
 
-        if(imagePath){
-            postData.miniature = imagePath;
-        }else{
-            postData.miniature = null;
-            await fs.unlink(req.files.avatar.path); //Se me estaba guardando un archivo vacío igual, acá no prevengo que no se guarde, pero por lo menos lo borro
-        }
+      imagePath = `${fileSplit[1]}/${fileSplit[2]}`;
     }
 
-    try {
-        const response = await Post.findByIdAndUpdate(id, postData, {new:true});
-        res.status(200).send({response});
-    } catch (error) {
-        res.status(400).send({msg: "Error de actualizacion"});
+    if (imagePath) {
+      postData.miniature = imagePath;
+    } else {
+      postData.miniature = null;
+      await fs.unlink(req.files.avatar.path); //Se me estaba guardando un archivo vacío igual, acá no prevengo que no se guarde, pero por lo menos lo borro
     }
+  }
+
+  try {
+    const response = await Post.findByIdAndUpdate(id, postData, { new: true });
+    res.status(200).send({ response });
+  } catch (error) {
+    res.status(400).send({ msg: "Error de actualizacion" });
+  }
 }
 
-async function deletePost(req, res){
-    const {id} = req.params;
+async function deletePost(req, res) {
+  const { id } = req.params;
 
-    try {
-        await Post.findByIdAndDelete(id);
-        res.status(200).send({msg: "Post eliminado"});
-    } catch (error) {
-        res.status(400).send({msg: "Error al eliminar"});
-    }
+  try {
+    await Post.findByIdAndDelete(id);
+    res.status(200).send({ msg: "Post eliminado" });
+  } catch (error) {
+    res.status(400).send({ msg: "Error al eliminar" });
+  }
 }
-
 
 //no necesitan autenticacion
-async function searchPost(req, res){
-    const {page = 1, limit = 6} = req.query;
-    const {search} = req.body;
+//BUSCAR
+async function searchPost(req, res) {
+  const { page = 1, limit = 6 } = req.query;
+  const { search } = req.body;
 
-    const options = {
-        page: parseInt(page),
-        limit: parseInt(limit)
-    }
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+  };
 
-    const regex = new RegExp(search, "i");
-    /*La condición $regex permite realizar una búsqueda basada en una expresión regular.
+  const regex = new RegExp(search, "i");
+  /*La condición $regex permite realizar una búsqueda basada en una expresión regular.
         Una expresión regular es una secuencia de caracteres que define un patrón de búsqueda.
         En el caso de la búsqueda por título o autor,utilizamos la expresión regular para 
         buscar coincidencias parciales en el campo correspondiente.
         */
 
+  try {
+    const response = await Post.paginate(
+      { $or: [{ title: regex }, { author: regex }] },
+      options
+    );
 
-    try {
-        
-
-        const response = await Post.paginate(
-            { $or: [{ title: regex }, { author: regex }] }, options
-        );
-
-        res.status(200).send(response);
-    } catch (error) {
-        res.status(400).send({msg: "Post no encontrado"});
-    }
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(400).send({ msg: "Post no encontrado" });
+  }
 }
 
-async function getPosts(req, res){
-    const {page = 1, limit = 6} = req.query;
+//OBTENER
+async function getPosts(req, res) {
+  const { page = 1, limit = 6 } = req.query;
 
-    const options = {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        sort: {create_date: 'desc'}
-    }
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+    sort: { create_date: "desc" },
+  };
 
-    try {
-        const response = await Post.paginate({}, options);
-        res.status(200).send(response);
-    } catch (error) {
-        res.status(400).send({msg: "Error al obtener los posts"});
-    }
+  try {
+    const response = await Post.paginate({}, options);
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(400).send({ msg: "Error al obtener los posts" });
+  }
 }
 
-async function getPost(req, res){
-    const {id} = req.params;
+async function getPost(req, res) {
+  const { id } = req.params;
 
-    try {
-        const response = await Post.findOne({_id: id});
+  try {
+    const response = await Post.findOne({ _id: id });
 
-        if(!response){
-            res.status(400).send({msg: "No se pudo encontrar el post"});
-        }else{
-            res.status(200).send(response);
-        }
-    } catch (error) {
-        res.status(500).send({msg: "Error del servidor"});
+    if (!response) {
+      res.status(400).send({ msg: "No se pudo encontrar el post" });
+    } else {
+      res.status(200).send(response);
     }
+  } catch (error) {
+    res.status(500).send({ msg: "Error del servidor" });
+  }
 }
 
-/**
- * async function sortByCreationDate(req, res){
-    console.log("???");
-    const {page = 1, limit = 9} = req.query;
+async function getMyPosts(req, res) {
+  const { username } = req.params;
+  const { page = 1, limit = 6 } = req.query;
 
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+    sort: { create_date: "desc" },
+  };
 
-    const options = {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        //sort: {create_date: "desc"}
-    }
-
-    try {
-        const posts = await Post.paginate({}, options);
-        res.status(200).send(posts);
-      } catch (error) {
-        res.status(400).send({ msg: "Error al obtener los posts" });
-      }
-}
- * 
- */
-
-async function sortByPopularity(req, res){
-    const {page = 1, limit = 6} = req.query;
-    
-    const options = {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        sort: {likes: -1}
-    }
-    try {
-        const posts = await Post.paginate({}, options);
-        res.status(200).send(posts);
-      } catch (error) {
-        res.status(400).send({ msg: "Error al obtener los posts" });
-      }
+  try {
+    const myPosts = await Post.paginate({ author: username }, options);
+    res.status(200).send(myPosts);
+  } catch (error) {
+    res.status(400).send({ msg: "Error al obtener posts" });
+  }
 }
 
+//ORDENAR
+async function sortByPopularity(req, res) {
+  const { page = 1, limit = 6 } = req.query;
+
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+    sort: { likeCount: -1 },
+  };
+  try {
+    const posts = await Post.paginate({}, options);
+    res.status(200).send(posts);
+  } catch (error) {
+    res.status(400).send({ msg: "Error al obtener los posts" });
+  }
+}
+
+//INTERACTUAR
 async function likePost(req, res) {
-    const { id } = req.params;
-    const { user_id } = req.user;
-  
-    try {
-      const post = await Post.findById(id);
-  
-      // Crear un nuevo arreglo con el user_id agregado al final del arreglo de likes
-      const updatedLikes = [...post.likes, user_id];
+  const { id } = req.params; // ID del post al que se le dará o quitará like
+  const { user_id } = req.user; // ID del usuario que está dando o quitando el like
 
-      if(post.likes.includes(user_id)){
-        //Busco el post y elimino el id (saca el like)
-        await Post.updateOne(
-            { _id: post._id },
-            { $pull: { likes: user_id } }
-          );
+  try {
+    // Buscar el post en la base de datos por su ID
+    const post = await Post.findById(id);
 
-          res.status(200).send({mas: "Like eliminado correctamente"});
-      }else{
-        // Actualizar el campo likes del post con el nuevo arreglo
-        post.likes = updatedLikes;
-        await post.save();
-          
-        res.status(200).send({ msg: "Like agregado correctamente" });
-      }
-
-    } catch (error) {
-      res.status(500).send({ msg: "Error al dar like al post" });
-    }
-}
-
-async function getMyPosts(req, res){
-    const {username} = req.params;
-    const {page = 1, limit = 6} = req.query;
-
-    const options = {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        sort: {create_date: 'desc'}
+    if (!post) {
+      // Si el post no existe, retornar un error 404 (No encontrado)
+      return res.status(404).send({ msg: "Post no encontrado" });
     }
 
-    try {
-        const myPosts = await Post.paginate({author: username}, options);
-        res.status(200).send(myPosts);
-    } catch (error) {
-        res.status(400).send({msg: "Error al obtener posts"});
+    // Comprobar si el usuario ya ha dado like al post
+    const userLikedPost = post.likes.includes(user_id);
+
+    if (userLikedPost) {
+      // Si el usuario ya ha dado like al post, quitar su ID del arreglo de likes
+      await Post.updateOne({ _id: post._id }, { $pull: { likes: user_id } });
+
+      // Actualizar el contador likeCount
+      post.likeCount = post.likes.length - 1;
+      await post.save();
+
+      return res.status(200).send({ msg: "Like eliminado correctamente" });
+    } else {
+      // Si el usuario no ha dado like previamente, agregar su ID al arreglo de likes
+      post.likes.push(user_id);
+
+      // Actualizar el contador likeCount
+      post.likeCount = post.likes.length;
+      await post.save();
+
+      return res.status(200).send({ msg: "Like agregado correctamente" });
     }
+  } catch (error) {
+    // Si ocurre un error en el proceso, retornar un error 500 (Error interno del servidor)
+    res.status(500).send({ msg: "Error al dar like al post" });
+  }
 }
 
 module.exports = {
-     getMyPosts ,sortByPopularity ,createPost, updatePost, deletePost, searchPost, getPosts, likePost, getPost
-}
+  getMyPosts,
+  sortByPopularity,
+  createPost,
+  updatePost,
+  deletePost,
+  searchPost,
+  getPosts,
+  likePost,
+  getPost,
+};

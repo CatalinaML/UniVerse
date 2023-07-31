@@ -11,8 +11,8 @@ export function initialValues(post){
 
 export function validationSchema(){
     return Yup.object({
-        title: Yup.string().required(true),
-        content: Yup.string().required(true),
-        miniature: Yup.string().required(true)
+        title: Yup.string().required("Campo obligatorio"),
+        content: Yup.string().required("Campo obligatorio"),
+        miniature: Yup.string().required("Campo obligatorio")
     })
 }

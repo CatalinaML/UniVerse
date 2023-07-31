@@ -15,7 +15,11 @@
         .box-buttons{
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-        }     
+            justify-content: flex-start;
+        }  
+        
+        .followers{
+            margin: 0 0 14px 0;
+        }
     }
 }

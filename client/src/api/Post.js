@@ -2,6 +2,7 @@ import { ENV } from "../utils/constants";
 
 export class Post{
 
+    //ORDENAMIENTO
     async sortDate(page = 1, limit = 8){
         try {
             
@@ -22,11 +23,14 @@ export class Post{
         
     }
 
-    async getPost(idPost){
+    async sortPopularity(page = 1, limit = 8){
         try {
-            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.POST}/${idPost}`;
+            const pageFilter = `page=${page}`;
+            const limitFilter = `limit=${limit}`;
 
-            const response =  await fetch(url);
+            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.SORT_POPULARITY}/?${pageFilter}&${limitFilter}`;
+
+            const response = await fetch(url);
             const result = await response.json();
 
             if(response.status !== 200) throw result;
@@ -37,6 +41,7 @@ export class Post{
         }
     }
 
+    //INTERACCION
     async likePost(idPost, accessToken){
         try {
             const url = `${ENV.BASE_API}/${ENV.API_ROUTES.POST}/${idPost}`;
@@ -58,6 +63,7 @@ export class Post{
         }
     }
 
+    //BUSQUEDA
     async getSearch(value, page=1, limit=8){
 
         const pageFilter = `page=${page}`;
@@ -86,24 +92,7 @@ export class Post{
         }
     }
 
-    async sortPopularity(page = 1, limit = 8){
-        try {
-            const pageFilter = `page=${page}`;
-            const limitFilter = `limit=${limit}`;
-
-            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.SORT_POPULARITY}/?${pageFilter}&${limitFilter}`;
-
-            const response = await fetch(url);
-            const result = await response.json();
-
-            if(response.status !== 200) throw result;
-
-            return result;
-        } catch (error) {
-            throw error;
-        }
-    }
-
+    //CREACION, ELIMINACION Y EDICION
     async createPost(data, accessToken){
         try {
             const formData = new FormData();
@@ -123,31 +112,6 @@ export class Post{
                     Authorization : `Bearer ${accessToken}`,
                 },
                 body: formData
-            };
-
-            const response = await fetch(url, params);
-            const result = await response.json();
-
-            if(response.status !== 200) throw result;
-
-            return result;
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async getMyPosts(page=1, author, accessToken, limit = 8){
-        try {
-            const pageFilter = `page=${page}`;
-            const limitFilter = `limit=${limit}`;
-
-            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.MY_POSTS}/${author}?${pageFilter}&${limitFilter}`;
-
-            const params = {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
             };
 
             const response = await fetch(url, params);
@@ -203,6 +167,47 @@ export class Post{
             };
 
             const response = await fetch(url, params);
+            const result = await response.json();
+
+            if(response.status !== 200) throw result;
+
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    //OBTENCION
+    async getMyPosts(page=1, author, accessToken, limit = 8){
+        try {
+            const pageFilter = `page=${page}`;
+            const limitFilter = `limit=${limit}`;
+
+            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.MY_POSTS}/${author}?${pageFilter}&${limitFilter}`;
+
+            const params = {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            };
+
+            const response = await fetch(url, params);
+            const result = await response.json();
+
+            if(response.status !== 200) throw result;
+
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getPost(idPost){
+        try {
+            const url = `${ENV.BASE_API}/${ENV.API_ROUTES.POST}/${idPost}`;
+
+            const response =  await fetch(url);
             const result = await response.json();
 
             if(response.status !== 200) throw result;

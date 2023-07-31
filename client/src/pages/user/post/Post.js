@@ -1,9 +1,10 @@
-import React from 'react'
-import {Post as PostComponent} from "../../../components"
+import React from "react";
+import { Post as PostComponent } from "../../../components";
+
 export function Post() {
   return (
     <div>
-      <PostComponent/>
+      <PostComponent />
     </div>
-  )
+  );
 }
