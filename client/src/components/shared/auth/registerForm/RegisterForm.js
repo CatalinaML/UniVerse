@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Form, Image } from "semantic-ui-react";
+import { Form, Image, Message } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { useFormik } from "formik";
 
@@ -23,12 +23,11 @@ export function RegisterForm(props) {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        console.log(formValue);
         setError("");
         await userController.register(formValue);
         openLogin();
       } catch (error) {
-        console.error(error);
+        setError(error.msg);
       }
     },
   });
@@ -68,6 +67,12 @@ export function RegisterForm(props) {
         <Image avatar size="small" src={getAvatar()} />
       </div>
 
+      {error && (
+        <Message negative>
+          <p>{error}</p>
+        </Message>
+      )}
+
       <Form.Input
         name="username"
         placeholder="Nombre de usuario"
@@ -92,7 +97,7 @@ export function RegisterForm(props) {
         value={formik.values.password}
         error={formik.errors.email}
       />
-      
+
       <Form.Input
         name="repeatPassword"
         type="password"
@@ -111,8 +116,6 @@ export function RegisterForm(props) {
       >
         Registrarse
       </Form.Button>
-
-      <p className="register-form__error">{error}</p>
     </Form>
   );
 }

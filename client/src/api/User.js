@@ -48,7 +48,9 @@ export class User {
       if (response.status !== 200) throw result;
 
       return result;
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   async refreshAccessToken(refreshToken) {

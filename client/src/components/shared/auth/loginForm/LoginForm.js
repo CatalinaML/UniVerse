@@ -1,5 +1,5 @@
-import React from "react";
-import { Form } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Form, Message } from "semantic-ui-react";
 import { useFormik } from "formik";
 
 import { initialValues, validationSchema } from "./LoginForm.Form";
@@ -11,6 +11,7 @@ const userController = new User();
 
 export function LoginForm() {
   const { login } = useAuth();
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -19,13 +20,15 @@ export function LoginForm() {
     onSubmit: async (formValue) => {
       try {
         const response = await userController.login(formValue);
-        //GUARDAR TOKENS EN LOCALSOTRAGE
-        userController.setAccessToken(response.access);
-        userController.setRefreshToken(response.refresh);
-        //authContext
-        login(response.access);
+        if (response) {
+          //GUARDAR TOKENS EN LOCALSOTRAGE
+          userController.setAccessToken(response.access);
+          userController.setRefreshToken(response.refresh);
+          //authContext
+          login(response.access);
+        }
       } catch (error) {
-        console.error(error);
+        setErrorMessage(error.msg);
       }
     },
   });
@@ -47,6 +50,11 @@ export function LoginForm() {
         value={formik.values.password}
         error={formik.errors.password}
       />
+      {errorMessage && (
+        <Message negative>
+          <p>{errorMessage}</p>
+        </Message>
+      )}
       <Form.Button
         basic
         color="black"

@@ -39,6 +39,17 @@ async function register(req, res) {
   }
 
   try {
+    // Verificar si el username o el email ya están en uso antes de realizar la actualización
+    const existingUser = await User.findOne({
+      $or: [{ username: username }, { email: email }],
+    });
+
+    console.log(existingUser);
+    if (existingUser) {
+      // Enviar una respuesta con un mensaje indicando que el username o el email ya están en uso
+      return res.status(409).send({ msg: "Username inhabilitado" });
+    }
+
     await user.save();
     res.status(200).send({ msg: "Usuario registrado" });
   } catch (error) {
@@ -49,30 +60,30 @@ async function register(req, res) {
 async function login(req, res) {
   const { email, password } = req.body;
 
-  if (!email) res.status(400).send({ msg: "Email obligatorio" });
-  if (!password) res.status(400).send({ msg: "Contraseña obligatoria" });
-
   try {
     //función de mongoose
     const response = await User.findOne({ email: email });
 
-    //comparar contraseñas encriptadas
-
-    bcrypt.compare(password, response.password, (bcryptError, check) => {
-      //comparar
-      if (bcryptError) {
-        res.status(500).send({ msg: "Error del servidor" });
-      } else if (!check) {
-        //las contraseñas no son iguales
-        res.status(400).send({ msg: "Contraseña incorrecta" });
-      } else {
-        //como la contraseña es correcta envío los tokens
-        res.status(200).send({
-          access: jwt.createAccesToken(response),
-          refresh: jwt.createRefreshToken(response),
-        });
-      }
-    });
+    if (response) {
+      //comparar contraseñas encriptadas
+      bcrypt.compare(password, response.password, (bcryptError, check) => {
+        //comparar
+        if (bcryptError) {
+          res.status(500).send({ msg: "Error del servidor" });
+        } else if (!check) {
+          //las contraseñas no son iguales
+          res.status(409).send({ msg: "Contraseña incorrecta" });
+        } else {
+          //como la contraseña es correcta envío los tokens
+          res.status(200).send({
+            access: jwt.createAccesToken(response),
+            refresh: jwt.createRefreshToken(response),
+          });
+        }
+      });
+    } else {
+      res.status(409).send({ msg: "Email incorrecto" });
+    }
   } catch (error) {
     res.status(500).send({ msg: "Error del servidor" });
   }
