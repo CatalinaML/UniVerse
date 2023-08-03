@@ -27,11 +27,7 @@ export function ProfileForm(props) {
         onReload();
         close();
       } catch (error) {
-        if (error.msg === "Username inhabilitado") {
-          setError("El nombre de usuario o email ya están en uso");
-        } else {
-          console.error(error);
-        }
+        setError(error.msg);
       }
     },
   });

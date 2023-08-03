@@ -48,7 +48,7 @@ async function updateUser(req, res) {
 
     if (existingUser) {
       // Enviar una respuesta con un mensaje indicando que el username o el email ya están en uso
-      return res.status(409).send({ msg: "Username inhabilitado" });
+      return res.status(409).send({ msg: "Usuario o email inhabilitado" });
     }
 
     const response = await User.findByIdAndUpdate(id, userData, { new: true });
