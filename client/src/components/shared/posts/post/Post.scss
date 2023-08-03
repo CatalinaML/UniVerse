@@ -24,10 +24,11 @@
                         height: 3.75em;
                     }
         
-                    > span{
+                    &-username{
                         font-size: medium;
                         font-weight: 600;
                         text-transform: uppercase;
+                        color: black;
                     }  
                 }
                 

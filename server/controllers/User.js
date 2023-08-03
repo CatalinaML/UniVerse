@@ -126,10 +126,22 @@ async function followUnfollow(req, res) {
   }
 }
 
+async function getUser(req, res) {
+  const { id } = req.params;
+  try {
+    const response = await User.findById(id);
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send({ msg: "Error del servidor" });
+  }
+}
+
 module.exports = {
   updateUser,
   getMe,
   deleteUser,
   getCurrentUser,
   followUnfollow,
+  getUser,
 };

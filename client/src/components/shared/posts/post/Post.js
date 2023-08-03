@@ -7,7 +7,7 @@ import {
   Label,
   Icon,
 } from "semantic-ui-react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { DateTime } from "luxon";
 
 import { User, Post as PostController } from "../../../../api";
@@ -94,7 +94,13 @@ export function Post() {
               ) : (
                 <Image avatar src={image.noAvatar} />
               )}
-              <span>{post.author}</span>
+              <Link
+                className="post__info-author-info-username"
+                to={`/user/${post.id_author}`}
+                state={{ id_author: `${post.id_author}` }}
+              >
+                {post.author}
+              </Link>
             </div>
 
             <div className="post__info-author-button">

@@ -17,4 +17,6 @@ api.delete("/user/:id", [md_auth.asureAuth], userController.deleteUser);
 
 //FOLLOW / UNFOLLOW
 api.post("/user/:id", [md_auth.asureAuth], userController.followUnfollow);
+
+api.get("/user/:id", userController.getUser);
 module.exports = api;

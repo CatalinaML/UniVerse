@@ -1,3 +1,4 @@
+const { log } = require("console");
 const Post = require("../models/Post");
 const fs = require("fs").promises;
 const User = require("../models/User");
@@ -89,6 +90,24 @@ async function deletePost(req, res) {
   }
 }
 
+async function getMyPosts(req, res) {
+  const { username } = req.params;
+  const { page = 1, limit = 6 } = req.query;
+
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+    sort: { create_date: "desc" },
+  };
+
+  try {
+    const myPosts = await Post.paginate({ author: username }, options);
+    res.status(200).send(myPosts);
+  } catch (error) {
+    res.status(400).send({ msg: "Error al obtener posts" });
+  }
+}
+
 //no necesitan autenticacion
 //BUSCAR
 async function searchPost(req, res) {
@@ -153,10 +172,11 @@ async function getPost(req, res) {
   }
 }
 
-async function getMyPosts(req, res) {
-  const { username } = req.params;
+async function getUserPost(req, res) {
   const { page = 1, limit = 6 } = req.query;
+  const { id } = req.params;
 
+  console.log(id);
   const options = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -164,13 +184,12 @@ async function getMyPosts(req, res) {
   };
 
   try {
-    const myPosts = await Post.paginate({ author: username }, options);
-    res.status(200).send(myPosts);
+    const response = await Post.paginate({ id_author: id }, options);
+    res.status(200).send(response);
   } catch (error) {
-    res.status(400).send({ msg: "Error al obtener posts" });
+    res.status(500).send({ msg: "Error del servidor" });
   }
 }
-
 //ORDENAR
 async function sortByPopularity(req, res) {
   const { page = 1, limit = 6 } = req.query;
@@ -240,4 +259,5 @@ module.exports = {
   getPosts,
   likePost,
   getPost,
+  getUserPost,
 };

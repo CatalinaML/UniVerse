@@ -1,0 +1,19 @@
+.profile{
+    height: 100%;
+
+    &__info{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+
+        &-content{
+            padding-left: 30px;
+            padding-right: 30px;
+
+            &-followers{
+                margin: 0 0 14px 0;
+            }
+        }
+    }
+}

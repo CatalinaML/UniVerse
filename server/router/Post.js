@@ -24,5 +24,6 @@ api.get("/post/:id", postController.getPost);
 api.get("/post", postController.getPosts);
 //api.get("/post/sort_date", postController.sortByCreationDate);
 api.post("/post/:id", [md_auth.asureAuth], postController.likePost);
+api.get("/posts/:id", postController.getUserPost);
 
 module.exports = api;

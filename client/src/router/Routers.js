@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Home, Post, Auth, HomeBlogger, Profile } from "../pages";
+import { Home, Post, Auth, HomeBlogger, Profile, UserProfile } from "../pages";
 import { UserLayout, BloggerLayout } from "../layout";
 
 import { useAuth } from "../hooks";
@@ -28,6 +28,10 @@ export function Routers() {
           <Route
             path="/blogger/*"
             element={loadLayout(UserLayout, Auth)}
+          ></Route>
+          <Route
+            path="/user/:id"
+            element={loadLayout(UserLayout, UserProfile)}
           ></Route>
         </>
       ) : (
