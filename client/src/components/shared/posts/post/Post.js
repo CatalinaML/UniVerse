@@ -94,13 +94,25 @@ export function Post() {
               ) : (
                 <Image avatar src={image.noAvatar} />
               )}
-              <Link
-                className="post__info-author-info-username"
-                to={`/user/${post.id_author}`}
-                state={{ id_author: `${post.id_author}` }}
-              >
-                {post.author}
-              </Link>
+
+              {user ? (
+                user._id === post.id_author && (
+                  <Link
+                    className="post__info-author-info-username"
+                    to="/blogger/profile"
+                  >
+                    {post.author}
+                  </Link>
+                )
+              ) : (
+                <Link
+                  className="post__info-author-info-username"
+                  to={`/user/${post.id_author}`}
+                  state={{ id_author: `${post.id_author}` }}
+                >
+                  {post.author}
+                </Link>
+              )}
             </div>
 
             <div className="post__info-author-button">
