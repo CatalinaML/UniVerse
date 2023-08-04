@@ -20,6 +20,7 @@ export function Routers() {
     <Routes>
       {!user ? (
         <>
+          {/*RUTAS QUE SOLO PUEDEN ACCEDER USUARIOS NO LOGEADOS*/}
           <Route path="/" element={loadLayout(UserLayout, Home)}></Route>
           <Route
             path="/post/:id"
@@ -29,13 +30,10 @@ export function Routers() {
             path="/blogger/*"
             element={loadLayout(UserLayout, Auth)}
           ></Route>
-          <Route
-            path="/user/:id"
-            element={loadLayout(UserLayout, UserProfile)}
-          ></Route>
         </>
       ) : (
         <>
+          {/**RUTAS QUE SOLO PUEDEN ACCEDER USUARIOS LOGEADOS */}
           {["/", "/blogger", "/blogger/home"].map((path) => (
             <Route
               key={path}
@@ -53,6 +51,11 @@ export function Routers() {
           ></Route>
         </>
       )}
+      {/**RUTAS QUE PUEDE ACCEDER CUALQUIERA */}
+      <Route
+        path="/user/:id"
+        element={loadLayout(UserLayout, UserProfile)}
+      ></Route>
     </Routes>
   );
 }

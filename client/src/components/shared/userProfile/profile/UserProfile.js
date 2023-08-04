@@ -10,18 +10,20 @@ const userController = new User();
 export function UserProfile(props) {
   const { id_author } = props;
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     (async () => {
       //Busqueda de todos los datos del usuario
       try {
         const response = await userController.getUser(id_author.id_author);
-        console.log(response);
+
         setUser(response);
       } catch (error) {
         console.error(error);
       }
     })();
   }, []);
+
   return (
     <div className="profile">
       <div className="profile__info">
@@ -39,7 +41,7 @@ export function UserProfile(props) {
 
         <div className="profile__info-content">
           <h1>{user?.username}</h1>
-          
+
           <div className="profile__info-followers">
             <Label size="medium">
               Seguidos

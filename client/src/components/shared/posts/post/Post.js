@@ -43,9 +43,11 @@ export function Post() {
 
         setPost(response);
 
-        const currentUser = await userController.getMe(accessToken);
-        if (currentUser.follow.includes(response.id_author)) {
-          setIsFollowing(true);
+        if (user) {
+          const currentUser = await userController.getMe(accessToken);
+          if (currentUser.follow.includes(response.id_author)) {
+            setIsFollowing(true);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -96,10 +98,18 @@ export function Post() {
               )}
 
               {user ? (
-                user._id === post.id_author && (
+                user._id === post.id_author ? (
                   <Link
                     className="post__info-author-info-username"
                     to="/blogger/profile"
+                  >
+                    {post.author}
+                  </Link>
+                ) : (
+                  <Link
+                    className="post__info-author-info-username"
+                    to={`/user/${post.id_author}`}
+                    state={{ id_author: `${post.id_author}` }}
                   >
                     {post.author}
                   </Link>
