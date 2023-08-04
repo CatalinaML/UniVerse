@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Loader, Pagination, Dropdown, Form, Icon } from "semantic-ui-react";
+import {
+  Loader,
+  Pagination,
+  Dropdown,
+  Form,
+  Icon,
+  Message,
+} from "semantic-ui-react";
 import { map } from "lodash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 
 import { ItemPost } from "../itemPost";
 import { Post } from "../../../../api";
+import { useAuth } from "../../../../hooks";
 
 import "./ListPost.scss";
 
@@ -15,6 +23,7 @@ export function ListPost(props) {
   const { reload } = props;
   //acá recupero los post de la respuesta http
   const [posts, setPosts] = useState(null);
+  const [error, setError] = useState(null);
 
   //constantes de paginación
   const [pagination, setPagination] = useState();
@@ -25,6 +34,8 @@ export function ListPost(props) {
   const [page, setPage] = useState(searchparams.get("page") || 1);
 
   const [dropValue, setDropValue] = useState("date");
+
+  const { user, accessToken } = useAuth();
 
   //constante de navegación
   const navigate = useNavigate();
@@ -57,8 +68,10 @@ export function ListPost(props) {
           response = await postController.sortDate(page);
         } else if (dropValue === "like") {
           response = await postController.sortPopularity(page);
+        } else if (dropValue === "follow") {
+          const res = await postController.getFollowPosts(accessToken, page);
+          response = res[0];
         }
-
         setPosts(response.docs); //.docs por la paginación
 
         setPagination({
@@ -68,7 +81,7 @@ export function ListPost(props) {
           total: response.total,
         });
       } catch (error) {
-        console.error(error);
+        setError(error.msg);
       }
     })();
   }, [page, dropValue, reload]);
@@ -86,9 +99,13 @@ export function ListPost(props) {
   //función que cambia el parametro de ordenamiento
   const changeSort = (_, data) => {
     if (data.value === "date") {
+      setError(null);
       setDropValue("date");
-    } else {
+    } else if (data.value === "like") {
+      setError(null);
       setDropValue("like");
+    } else {
+      setDropValue("follow");
     }
   };
 
@@ -111,13 +128,14 @@ export function ListPost(props) {
                 text="Popular"
                 onClick={changeSort}
               />
-              <Dropdown.Item
-                disabled
-                icon="user"
-                value="follow"
-                text="Seguidos"
-                onClick={changeSort}
-              />
+              {user && (
+                <Dropdown.Item
+                  icon="user"
+                  value="follow"
+                  text="Seguidos"
+                  onClick={changeSort}
+                />
+              )}
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -139,17 +157,21 @@ export function ListPost(props) {
             </Form.Group>
           </Form>
         </div>
-
-        {/**FILTRAR TAGS */}
       </div>
 
       {/**LISTA */}
       <div className="list">
-        {map(posts, (post) => (
-          <div key={post._id} className="item">
-            <ItemPost post={post} />
-          </div>
-        ))}
+        {error ? (
+          <Message className="error" warning>
+            <p>{error}</p>
+          </Message>
+        ) : (
+          map(posts, (post) => (
+            <div key={post._id} className="item">
+              <ItemPost post={post} />
+            </div>
+          ))
+        )}
       </div>
 
       {/**PAGINACION */}

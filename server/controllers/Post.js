@@ -108,6 +108,33 @@ async function getMyPosts(req, res) {
   }
 }
 
+async function getFollowPost(req, res) {
+  const { page = 1, limit = 6 } = req.query;
+  const { user_id } = req.user;
+
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+    sort: { create_date: "desc" },
+  };
+
+  try {
+    const user = await User.findById(user_id);
+    let mergedPosts = [];
+
+    if (user.follow.length > 0) {
+      for (const follower of user.follow) {
+        const posts = await Post.paginate({ id_author: follower }, options);
+        mergedPosts.push(posts);
+      }
+      res.status(200).send(mergedPosts);
+    } else {
+      res.status(409).send({ msg: "No sigues a nadie todavía" });
+    }
+  } catch (error) {
+    res.status(500).send({ msg: "Error del servidor" });
+  }
+}
 //no necesitan autenticacion
 //BUSCAR
 async function searchPost(req, res) {
@@ -176,7 +203,6 @@ async function getUserPost(req, res) {
   const { page = 1, limit = 6 } = req.query;
   const { id } = req.params;
 
-  console.log(id);
   const options = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -190,6 +216,7 @@ async function getUserPost(req, res) {
     res.status(500).send({ msg: "Error del servidor" });
   }
 }
+
 //ORDENAR
 async function sortByPopularity(req, res) {
   const { page = 1, limit = 6 } = req.query;
@@ -260,4 +287,5 @@ module.exports = {
   likePost,
   getPost,
   getUserPost,
+  getFollowPost,
 };

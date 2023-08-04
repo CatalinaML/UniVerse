@@ -6,6 +6,7 @@ export const ENV = {
   API_ROUTES: {
     POST: "post",
     MY_POSTS: "posts",
+    POSTS_FOLLOW: "posts/follow",
     SEARCH: "post/search",
     SORT_POPULARITY: "post/sort_popularity",
     REGISTER: "auth/register",

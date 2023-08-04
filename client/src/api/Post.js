@@ -88,6 +88,29 @@ export class Post {
     }
   }
 
+  async getFollowPosts(accessToken, page = 1, limit = 8) {
+    const pageFilter = `page=${page}`;
+    const limitFilter = `limit=${limit}`;
+
+    try {
+      const url = `${ENV.BASE_API}/${ENV.API_ROUTES.POSTS_FOLLOW}/?${pageFilter}&${limitFilter}`;
+      const params = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await fetch(url, params);
+      const result = await response.json();
+
+      if (response.status !== 200) throw result;
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   //CREACION, ELIMINACION Y EDICION
   async createPost(data, accessToken) {
     try {
