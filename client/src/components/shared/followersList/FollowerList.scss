@@ -1,0 +1,15 @@
+.ui.list{
+    .seccion{
+        width: 100%;
+    }
+
+    .link{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        
+        h4{
+            color: black;
+        }
+    }
+}

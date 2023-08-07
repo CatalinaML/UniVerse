@@ -17,9 +17,9 @@ export function Header() {
   };
 
   return (
-    <div className="header">
-      <div className="header__left">
-        <div className="header__left-menu">
+    <div className="header-page">
+      <div className="header-page__left">
+        <div className="header-page__left-menu">
           {!user ? (
             <Link
               to="/"
@@ -48,12 +48,12 @@ export function Header() {
         </div>
       </div>
 
-      <div className="header__left-logo">
+      <div className="header-page__left-logo">
         <Image size="medium" src={image.logo} as="a" href="/" />
       </div>
 
-      <div className="header__right">
-        <div className="header__right-buttons">
+      <div className="header-page__right">
+        <div className="header-page__right-buttons">
           {!user ? (
             <Button basic color="black" as="a" href="/blogger">
               Login

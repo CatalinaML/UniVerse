@@ -6,6 +6,7 @@ import { ItemPost } from "../../posts";
 import "./ListUserProfile.scss";
 
 const postController = new Post();
+
 export function ListPostProfile(props) {
   const { id_author, reload, onReload } = props;
 
@@ -45,7 +46,7 @@ export function ListPostProfile(props) {
     <div className="list-post">
       <div className="list-post__item">
         {map(posts, (post) => (
-          <ItemPost post={post} />
+          <ItemPost key={post._id} post={post} />
         ))}
       </div>
 

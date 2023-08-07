@@ -126,12 +126,42 @@ async function followUnfollow(req, res) {
   }
 }
 
+//obtener
 async function getUser(req, res) {
   const { id } = req.params;
   try {
     const response = await User.findById(id);
 
     res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send({ msg: "Error del servidor" });
+  }
+}
+
+async function getFollowFollower(req, res) {
+  const { id, type } = req.params;
+
+  try {
+    const user = await User.findById(id);
+
+    let followOfFollower = [];
+    let followFollowers = [];
+
+    if (type === "follow") {
+      followOfFollower = user.follow;
+    } else {
+      followOfFollower = user.followers;
+    }
+
+    if (followOfFollower.length > 0) {
+      for (const userFollow of followOfFollower) {
+        const userF = await User.findById(userFollow);
+        followFollowers.push(userF);
+      }
+      res.status(200).send(followFollowers);
+    } else {
+      res.status(409).send({ msg: "No hay seguidos" });
+    }
   } catch (error) {
     res.status(500).send({ msg: "Error del servidor" });
   }
@@ -144,4 +174,5 @@ module.exports = {
   getCurrentUser,
   followUnfollow,
   getUser,
+  getFollowFollower,
 };

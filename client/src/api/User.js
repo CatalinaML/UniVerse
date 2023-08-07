@@ -111,6 +111,21 @@ export class User {
     }
   }
 
+  async getFollowFollowers(idUser, type) {
+    try {
+      const url = `${ENV.BASE_API}/${ENV.API_ROUTES.USER}/${idUser}/${type}`;
+
+      const response = await fetch(url);
+      const result = await response.json();
+
+      if (response.status !== 200) throw result;
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   //EDICION
   async updateUser(accessToken, data, idUser) {
     try {
