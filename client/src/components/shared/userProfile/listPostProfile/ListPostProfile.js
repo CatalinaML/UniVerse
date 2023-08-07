@@ -43,14 +43,16 @@ export function ListPostProfile(props) {
     setPage(data.activePage);
   };
   return (
-    <div className="list-post">
-      <div className="list-post__item">
+    <div className="list-profile-post">
+      <div className="list-profile-post__item">
         {map(posts, (post) => (
-          <ItemPost key={post._id} post={post} />
+          <div className="item" key={post._id}>
+            <ItemPost post={post} />
+          </div>
         ))}
       </div>
 
-      <div className="list-post__pagination">
+      <div className="pagination">
         <Pagination
           totalPages={pagination.pages}
           defaultActivePage={pagination.page}
