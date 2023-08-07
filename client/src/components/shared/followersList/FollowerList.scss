@@ -1,15 +1,30 @@
 .ui.list{
     .seccion{
         width: 100%;
-    }
-
-    .link{
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        
+        justify-content: space-between;  
+
+        &__container{
+            display: flex;
+            align-items: center;
+        }
+
+        &__clickeable{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
         h4{
+            margin-left: 10px;
             color: black;
         }
+    }
+
+    
+
+    .seccion:hover{
+        cursor: pointer;
     }
 }

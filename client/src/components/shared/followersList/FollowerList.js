@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { User } from "../../../api";
-import { Image, List } from "semantic-ui-react";
+import { Button, Image, List } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { map } from "lodash";
 import { image } from "../../../assets";
@@ -12,7 +12,7 @@ const userController = new User();
 
 export function FollowerList(props) {
   const { type, userProfile } = props;
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
   const navigate = useNavigate();
 
   const [followFollowersList, setList] = useState(null);
@@ -20,10 +20,12 @@ export function FollowerList(props) {
   useEffect(() => {
     (async () => {
       try {
+        //busco la lista de seguidos o seguidores del usuario en cuestion
         const followFollowers = await userController.getFollowFollowers(
           userProfile._id,
           type
         );
+
         setList(followFollowers);
       } catch (error) {
         console.log(error);
@@ -31,8 +33,18 @@ export function FollowerList(props) {
     })();
   }, []);
 
+  const followUser = async (idUserF) => {
+    try {
+      //me sigo o dejo de seguir dependiendo el caso cada vez que se hace click en un boton
+      await userController.followUnfollow(accessToken, idUserF);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <List selection verticalAlign="middle">
+    <List verticalAlign="middle">
       {map(followFollowersList, (userF) =>
         user ? (
           user._id === userF._id ? (
@@ -40,37 +52,54 @@ export function FollowerList(props) {
               key={userF._id}
               role="listitem"
               className="seccion"
-              onClick={() => navigate("/blogger/profile")}
+              onClick={() => {
+                navigate("/blogger/profile");
+                navigate(0);
+              }}
             >
-              {userF?.avatar ? (
-                <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
-              ) : (
-                <Image avatar src={image.noAvatar} />
-              )}
+              <div className="seccion__container">
+                {userF?.avatar ? (
+                  <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
+                ) : (
+                  <Image avatar src={image.noAvatar} />
+                )}
 
-              <List.Content>
-                <List.Header>{userF.username}</List.Header>
-              </List.Content>
+                <List.Content>
+                  <h4>{userF.username}</h4>
+                </List.Content>
+              </div>
             </div>
           ) : (
-            <div
-              key={userF._id}
-              role="listitem"
-              className="seccion"
-              onClick={() =>
-                navigate(`/user/${userF._id}`, {
-                  state: { id_author: `${userF._id}` },
-                })
-              }
-            >
-              {userF?.avatar ? (
-                <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
-              ) : (
-                <Image avatar src={image.noAvatar} />
-              )}
-              <List.Content>
-                <List.Header>{userF.username}</List.Header>
-              </List.Content>
+            <div key={userF._id} role="listitem" className="seccion">
+              <div
+                className="seccion__clickeable"
+                onClick={() => {
+                  navigate(`/user/${userF._id}`, {
+                    state: { id_author: `${userF._id}` },
+                  });
+                  navigate(0);
+                }}
+              >
+                {userF?.avatar ? (
+                  <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
+                ) : (
+                  <Image avatar src={image.noAvatar} />
+                )}
+
+                <List.Content>
+                  <h4>{userF.username}</h4>
+                </List.Content>
+              </div>
+
+              <div>
+                <Button
+                  basic
+                  color="black"
+                  onClick={() => followUser(userF._id)}
+                >
+                  {user.follow.includes(userF._id) ? "Eliminar" : "Seguir"}
+                </Button>
+              </div>
             </div>
           )
         ) : (
@@ -85,15 +114,17 @@ export function FollowerList(props) {
               navigate(0);
             }}
           >
-            {userF?.avatar ? (
-              <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
-            ) : (
-              <Image avatar src={image.noAvatar} />
-            )}
+            <div className="seccion__container">
+              {userF?.avatar ? (
+                <Image avatar src={`${ENV.BASE_PATH}/${userF.avatar}`} />
+              ) : (
+                <Image avatar src={image.noAvatar} />
+              )}
 
-            <List.Content>
-              <h4>{userF.username}</h4>
-            </List.Content>
+              <List.Content>
+                <h4>{userF.username}</h4>
+              </List.Content>
+            </div>
           </div>
         )
       )}
