@@ -1,5 +1,5 @@
-const { log } = require("console");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const fs = require("fs").promises;
 const User = require("../models/User");
 

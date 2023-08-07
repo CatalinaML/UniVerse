@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require("./Comment");
 
 const pagination = require("mongoose-paginate");
 
@@ -12,6 +13,7 @@ const PostSchema = mongoose.Schema({
   avatar_author: String,
   likes: [String],
   likeCount: Number,
+  comments: [String],
 });
 
 PostSchema.plugin(pagination);
