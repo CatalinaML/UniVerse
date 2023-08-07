@@ -249,7 +249,7 @@ export function Post(props) {
                   </div>
                 </div>
               ))}
-              <CommentForm idPost={post._id} onReload={onReload} />
+              {user && <CommentForm idPost={post._id} onReload={onReload} />}
             </Comment.Group>
           </div>
         </div>
