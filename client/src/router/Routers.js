@@ -26,10 +26,7 @@ export function Routers() {
             path="/post/:id"
             element={loadLayout(UserLayout, Post)}
           ></Route>
-          <Route
-            path="/blogger/*"
-            element={loadLayout(UserLayout, Auth)}
-          ></Route>
+          <Route path="/blogger/*" element={<Auth></Auth>}></Route>
         </>
       ) : (
         <>
