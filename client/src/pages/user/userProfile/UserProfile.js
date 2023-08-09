@@ -14,11 +14,11 @@ export function UserProfile() {
   //función autorecarga
   const onReload = () => setReload((prevState) => !prevState);
   return (
-    <div className="profile-page">
-      <div className="profile-page__info">
+    <div className="user-profile-page">
+      <div className="user-profile-page__info">
         <Profile id_author={state} />
       </div>
-      <div className="profile-page__posts">
+      <div className="user-profile-page__posts">
         <ListPostProfile
           id_author={state}
           onReload={onReload}
