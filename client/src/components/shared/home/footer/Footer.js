@@ -11,7 +11,7 @@ export function Footer() {
   return (
     <div className="footer">
       <div className="footer__left">
-        <Image size="small" src={image.logo} />
+        <Image src={image.logo} />
 
         <div className="social">
           {map(socialData, (social) => (
@@ -20,14 +20,10 @@ export function Footer() {
               as="a"
               target="_blank"
               href={social.link}
-              color={social.type == "github" ? "grey" : social.type}
+              color={social.type === "github" ? "grey" : social.type}
               icon={social.type}
             />
           ))}
-        </div>
-
-        <div className="footer__left-rights">
-          <span>© 2023 | Catalina Liste | Web developer</span>
         </div>
       </div>
 
@@ -45,6 +41,10 @@ export function Footer() {
           Tu voz importa y esperamos con ansias tus aportes a nuestra comunidad
           en crecimiento.
         </span>
+      </div>
+
+      <div className="footer__rights">
+        <span>© 2023 | Catalina Liste | Web developer</span>
       </div>
     </div>
   );
