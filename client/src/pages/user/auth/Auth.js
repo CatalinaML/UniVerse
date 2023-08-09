@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Tab } from "semantic-ui-react";
+import { Tab, Image } from "semantic-ui-react";
 import { RegisterForm, LoginForm } from "../../../components";
+import { image } from "../../../assets";
 import "./Auth.scss";
 
 export function Auth() {
@@ -30,13 +31,19 @@ export function Auth() {
   ];
   return (
     <div className="auth">
-      <Tab
-        panes={panes}
-        menu={{ pointing: true }}
-        className="auth__forms"
-        activeIndex={activeIndex}
-        onTabChange={(_, data) => setActiveIndex(data.activeIndex)}
-      />
+      <div className="auth-container">
+        <div className="auth-container-image">
+          <Image size="medium" src={image.UniverseLogo} as="a" href="/" />
+        </div>
+
+        <Tab
+          panes={panes}
+          menu={{ attached: false, tabular: false }}
+          className="auth__forms"
+          activeIndex={activeIndex}
+          onTabChange={(_, data) => setActiveIndex(data.activeIndex)}
+        />
+      </div>
     </div>
   );
 }
