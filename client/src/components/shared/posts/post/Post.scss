@@ -1,5 +1,5 @@
 .ui.container{
-    margin-top: 3em;
+    margin: 3em;
     padding-bottom: 60px;
     display: flex;
     flex-direction: column;
@@ -72,7 +72,7 @@
                 &-disable{
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
+                    align-items: flex-end;
                     justify-content: center;
 
                     >p{
@@ -83,8 +83,48 @@
                 }
                 
             }
+
+            &-comments{
+                >.ui.comments{
+                    margin-top: 20px !important;
+
+                    .content-data-container{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .content-data{
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                        }
+
+                        .delete-comment:hover {
+                            cursor: pointer !important;
+                        } 
+                        
+                    }
+                }
+                
+            }
         }
     }
 
 
+}
+
+@media only screen and (max-width: 400px){
+    .ui.container{
+        .post{
+            padding: 1em 2em 1em 2em;
+        }
+    }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 600px){
+    .ui.container{
+        .post{
+            padding: 2em 4.5em 3em 4.5em;
+        }
+    }
 }

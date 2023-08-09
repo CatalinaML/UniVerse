@@ -9,6 +9,7 @@ import {
   Comment,
   CommentAvatar,
   CommentAuthor,
+  Header,
 } from "semantic-ui-react";
 import { useParams, Link } from "react-router-dom";
 import { DateTime } from "luxon";
@@ -189,7 +190,12 @@ export function Post(props) {
           <div className="post__content-like">
             {!user ? (
               <div className="post__content-like-disable">
-                <Button disabled="true" as="div" labelPosition="right">
+                <Button
+                  disabled="true"
+                  as="div"
+                  labelPosition="right"
+                  size="mini"
+                >
                   <Button color="orange" onClick={likePost}>
                     <Icon name="heart" />
                     Like
@@ -219,6 +225,8 @@ export function Post(props) {
 
           <div className="post__content-comments">
             <Comment.Group>
+              <Header dividing>Comentarios</Header>
+
               {map(comments, (comment) => (
                 <div key={comment._id}>
                   <Comment>
@@ -231,22 +239,36 @@ export function Post(props) {
                     )}
 
                     <Comment.Content>
-                      <CommentAuthor>{comment.username}</CommentAuthor>
-                      <Comment.Metadata>
-                        <div>{comment.date}</div>
-                      </Comment.Metadata>
+                      <div className="content-data-container">
+                        <div className="content-data">
+                          <Comment.Author>{comment.username}</Comment.Author>
+                          <Comment.Metadata>
+                            <div>
+                              {DateTime.fromISO(
+                                new Date(comment.date).toISOString()
+                              )
+                                .setLocale("es")
+                                .toFormat("dd LLLL yyyy")}
+                            </div>
+                          </Comment.Metadata>
+                        </div>
+
+                        <div className="delete-comment">
+                          {user && user.username === comment.username && (
+                            <Icon
+                              name="trash"
+                              size="small"
+                              onClick={() =>
+                                deleteComment(post._id, comment._id)
+                              }
+                            />
+                          )}
+                        </div>
+                      </div>
+
                       <Comment.Text>{comment.comment}</Comment.Text>
                     </Comment.Content>
                   </Comment>
-
-                  <div>
-                    {user && user.username === comment.username && (
-                      <Button
-                        icon="trash"
-                        onClick={() => deleteComment(post._id, comment._id)}
-                      />
-                    )}
-                  </div>
                 </div>
               ))}
               {user && <CommentForm idPost={post._id} onReload={onReload} />}
