@@ -15,3 +15,21 @@
         width: 100%;
     }
 }
+
+@media only screen and (max-width: 350px){
+    .blogger-layout{
+        padding-bottom: 30em;
+    }
+}
+
+@media only screen and (min-width: 350px) and (max-width: 400px){
+    .blogger-layout{
+        padding-bottom: 25em;
+    }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 600px){
+    .blogger-layout{
+        padding-bottom: 20em;
+    }
+}
