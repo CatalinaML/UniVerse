@@ -10,10 +10,28 @@
         &-content{
             padding-left: 30px;
             padding-right: 30px;
+        }
 
             &-followers{
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 margin: 0 0 14px 0;
             }
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .profile{
+        &__info{
+            flex-direction: column;
+            &-content{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
         }
+
     }
 }

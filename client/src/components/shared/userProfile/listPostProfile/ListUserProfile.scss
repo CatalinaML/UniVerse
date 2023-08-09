@@ -27,3 +27,45 @@
             }
         }
 }
+
+@media only screen and (max-width: 500px){
+    .list-profile-post{
+        padding-left: 10px;
+        padding-right: 10px;
+        &__item{
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            .item{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 800px){
+    .list-profile-post{
+        padding-left: 30px;
+        padding-right: 30px;
+        &__item{
+            .item{
+                width: 50%;
+            }
+        }
+    }
+    
+}
+
+@media only screen and (min-width: 800px) and (max-width: 1200px){
+    .list-profile-post{
+        padding-left: 40px;
+        padding-right: 40px;
+        &__item{
+            .item{
+                width: 33.33%;
+            }
+        }
+    }
+    
+}

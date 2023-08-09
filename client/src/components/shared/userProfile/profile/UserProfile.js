@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image } from "semantic-ui-react";
+import { Button, Image, Label } from "semantic-ui-react";
+
 import { User } from "../../../../api";
 import { ENV } from "../../../../utils";
 import { image } from "../../../../assets";
-import "./UserProfile.scss";
 import { ModalUsers } from "../../modal";
 import { FollowerList } from "../../followersList/FollowerList";
+
+import "./UserProfile.scss";
 
 const userController = new User();
 
@@ -16,6 +18,7 @@ export function UserProfile(props) {
   //MODAL
   const [showModal, setShowModal] = useState(false);
   const [type, setType] = useState(null);
+
   //ABRIR/CERRAR MODAL
   const onOpenCloseModal = (type) => {
     setType(type);
@@ -55,16 +58,26 @@ export function UserProfile(props) {
 
           <div className="profile__info-followers">
             <Button
+              as="div"
+              labelPosition="right"
               className="follow"
               onClick={() => onOpenCloseModal("follow")}
             >
-              {`${user?.follow.length || 0} Seguidos`}
+              <Button>Seguidos</Button>
+              <Label basic pointing="left">
+                {user?.follow.length || 0}
+              </Label>
             </Button>
             <Button
+              as="div"
+              labelPosition="right"
               className="followers"
               onClick={() => onOpenCloseModal("followers")}
             >
-              {`${user?.followers.length || 0} Seguidores`}
+              <Button>Seguidores</Button>
+              <Label basic pointing="left">
+                {user?.followers.length || 0}
+              </Label>
             </Button>
           </div>
         </div>
