@@ -21,8 +21,11 @@ const postController = new Post();
 
 export function ListPost(props) {
   const { reload } = props;
+
   //acá recupero los post de la respuesta http
   const [posts, setPosts] = useState(null);
+
+  //para mostrar errores
   const [error, setError] = useState(null);
 
   //constantes de paginación
@@ -30,6 +33,7 @@ export function ListPost(props) {
 
   //investigar para que era searchparams
   const [searchparams] = useSearchParams();
+
   //constante para la página actual
   const [page, setPage] = useState(searchparams.get("page") || 1);
 
@@ -45,17 +49,21 @@ export function ListPost(props) {
     validateOnChange: false,
     onSubmit: async (value) => {
       try {
+        //busca un post por autor o titulo
         const response = await postController.getSearch(value);
-
-        setPosts(response.docs);
-        setPagination({
-          limit: response.limit,
-          page: response.page,
-          pages: response.pages,
-          total: response.total,
-        });
+        if (response.docs.length === 0) {
+          setError("No hay posts");
+        } else {
+          setPosts(response.docs);
+          setPagination({
+            limit: response.limit,
+            page: response.page,
+            pages: response.pages,
+            total: response.total,
+          });
+        }
       } catch (error) {
-        console.error(error);
+        setError(error.msg);
       }
     },
   });
@@ -64,6 +72,7 @@ export function ListPost(props) {
     (async () => {
       try {
         let response = "";
+        //ordenamientos
         if (dropValue === "date") {
           response = await postController.sortDate(page);
         } else if (dropValue === "like") {
@@ -72,6 +81,7 @@ export function ListPost(props) {
           const res = await postController.getFollowPosts(accessToken, page);
           response = res[0];
         }
+
         setPosts(response.docs); //.docs por la paginación
 
         setPagination({
@@ -156,6 +166,58 @@ export function ListPost(props) {
               </Form.Button>
             </Form.Group>
           </Form>
+        </div>
+
+        <div className="responsive-filters">
+          <Dropdown icon="filter" floating direction="left">
+            <Dropdown.Menu>
+              <Dropdown.Item>
+                <Form onSubmit={formik.handleSubmit} size="tiny">
+                  <Form.Group>
+                    <Form.Input
+                      name="search"
+                      placeholder="Buscar..."
+                      onChange={formik.handleChange}
+                      value={formik.values.search}
+                      error={formik.errors.search}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input />
+                      <Form.Button
+                        type="submit"
+                        loading={formik.isSubmitting}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Icon name="search"></Icon>
+                      </Form.Button>
+                    </Form.Input>
+                  </Form.Group>
+                </Form>
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Header content="Ordenar" />
+              <Dropdown.Item
+                icon="calendar"
+                text="Nuevo"
+                value="date"
+                onClick={changeSort}
+              />
+              <Dropdown.Item
+                icon="like"
+                value="like"
+                text="Popular"
+                onClick={changeSort}
+              />
+              {user && (
+                <Dropdown.Item
+                  icon="user"
+                  value="follow"
+                  text="Seguidos"
+                  onClick={changeSort}
+                />
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
 
