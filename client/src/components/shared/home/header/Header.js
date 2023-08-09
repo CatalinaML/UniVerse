@@ -54,7 +54,7 @@ export function Header() {
       <div className="header-page__right">
         <div className="header-page__right-buttons">
           {!user ? (
-            <Button basic color="black" as="a" target="_blank" href="/blogger">
+            <Button basic color="black" as="a" href="/blogger">
               Login
             </Button>
           ) : (
@@ -104,9 +104,7 @@ export function Header() {
               )}
               {!user ? (
                 <Dropdown.Item>
-                  <a target="_blank" href="/blogger">
-                    Login
-                  </a>
+                  <a href="/blogger">Login</a>
                 </Dropdown.Item>
               ) : (
                 <Dropdown.Item>
