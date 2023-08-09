@@ -8,7 +8,7 @@ import { image } from "../../../../assets";
 
 export function Header() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
+
   const location = useLocation();
 
   const onLogout = () => {
@@ -54,7 +54,7 @@ export function Header() {
       <div className="header-page__right">
         <div className="header-page__right-buttons">
           {!user ? (
-            <Button basic color="black" as="a" href="/blogger">
+            <Button basic color="black" as="a" target="_blank" href="/blogger">
               Login
             </Button>
           ) : (
@@ -104,7 +104,9 @@ export function Header() {
               )}
               {!user ? (
                 <Dropdown.Item>
-                  <a href="/blogger">Login</a>
+                  <a target="_blank" href="/blogger">
+                    Login
+                  </a>
                 </Dropdown.Item>
               ) : (
                 <Dropdown.Item>
