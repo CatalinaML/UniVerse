@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Image } from "semantic-ui-react";
+import { Button, Icon, Image, Label } from "semantic-ui-react";
 import { image } from "../../../../assets";
 
 import { ProfileForm } from "../FormProfile";
@@ -59,30 +59,36 @@ export function Profile(props) {
         </div>
 
         <div className="profile-box__content">
-          <h1>{user?.username}</h1>
+          <div className="box-buttons">
+            <h1>{user?.username}</h1>
+            <div className="profile-box__buttons">
+              <Icon name="edit" onClick={onOpenCloseModal} />
+            </div>
+          </div>
 
           <div className="followers">
             <Button
+              as="div"
+              labelPosition="right"
               className="follow"
               onClick={() => onOpenCloseFollowersModal("follow")}
             >
-              {`${user?.follow.length || 0} Seguidos`}
+              <Button>Seguidos</Button>
+              <Label basic pointing="left">
+                {user?.follow.length || 0}
+              </Label>
             </Button>
             <Button
+              as="div"
+              labelPosition="right"
               className="followers"
               onClick={() => onOpenCloseFollowersModal("followers")}
             >
-              {`${user?.followers.length || 0} Seguidores`}
+              <Button>Seguidores</Button>
+              <Label basic pointing="left">
+                {user?.followers.length || 0}
+              </Label>
             </Button>
-          </div>
-
-          <div className="box-buttons">
-            <div className="profile-box__buttons">
-              <Button basic color="black" onClick={onOpenCloseModal}>
-                <Icon name="edit" />
-                Editar
-              </Button>
-            </div>
           </div>
         </div>
       </div>

@@ -15,11 +15,42 @@
         .box-buttons{
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
+
+            .profile-box__buttons:hover{
+                cursor: pointer;
+            }
         }  
         
         .followers{
-            margin: 0 0 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+@media screen and (max-width: 600px){
+    .profile{
+        &-box{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            &__content{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+
+                .box-buttons{
+                    width: 60%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                }
+            }
         }
     }
 }

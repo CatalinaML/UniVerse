@@ -27,8 +27,39 @@
             font-weight: bold;
         }
     }
+}
 
-    &__buttons{
-        padding-left: 4.5em;
+@media screen and (max-width: 500px) {
+    .post-item{
+        display: flex;
+        flex-direction: column;
+
+        &__imagen{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            >.ui.image{
+                width: 300px;
+            }
+        }
+
+        &__buttons{
+            margin: 10px;
+        }
     }
 }
+
+@media screen and (min-width: 500px) and (max-width: 700px){
+    .post-item{
+        display: flex;
+
+        &__imagen{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+}
+
