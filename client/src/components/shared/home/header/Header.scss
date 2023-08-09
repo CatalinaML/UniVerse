@@ -7,16 +7,13 @@
     height: 6.25em;
 
     border-bottom: 1px solid $border;
-    box-shadow: 0px -4px 15px 0px $border;
 
     &__left{
-        padding-left: 3.5em;
-        margin: 0.5em;
+        padding-left: 30px;
 
         &-menu{
-            padding-left: 1.25em;
             .link{
-                padding-left: 0.5em;
+                padding-left: 10px;
                 font-size: x-large;
                 color: black;
                 font-weight: 400;
@@ -25,10 +22,58 @@
                 font-weight: bold;
             }
         }
+
+        &-logo{
+            >.ui.image{
+                width: 300px;
+            }
+        }
     }
 
     &__right{
-        padding-right: 6.25em;
+        padding-right: 30px;
+
+        .responsive-menu{
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 800px ){
+    .header-page__left-logo{
+        >.ui.image{
+            width: 150px;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .header-page__left{
+        display: none;
+
+        &-logo{
+            padding-left: 30px;
+        }
     }
 
+    .header-page__right{
+        &-buttons{
+            display: none;
+        }
+        .responsive-menu{
+            display: block;
+
+            .link{
+                color: black;
+            }
+            .link.active{
+                font-weight: bold;
+            }
+
+            a{
+                text-decoration: none;
+                color: black;
+            }
+        }
+    }
 }
