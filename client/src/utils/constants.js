@@ -1,4 +1,4 @@
-const SERVER_IP = "localhost:4000";
+const SERVER_IP = "localhost:8080";
 
 export const ENV = {
   BASE_PATH: `http://${SERVER_IP}`,
