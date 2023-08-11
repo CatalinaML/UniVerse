@@ -31,15 +31,18 @@ El proyecto ha sido desarrollado utilizando el popular stack MERN (MongoDB, Expr
 - Iniciar sesión: Aquí los usuarios podrán acceder a su cuenta existente mediante sus credenciales.
 - Ver todos los posteos: Los usuarios no logeados podrán navegar y visualizar todos los posteos publicados en el blog hasta la fecha.
 - Ver un post: Acceso a la lectura de un post específico para conocer su contenido.
-- Ordenar posteos: Posibilidad de ordenar los posteos por fecha y por popularidad.
+- Ver el perfil de otro usuario: Pudiendo ver seguidores y seguidos del usuario y sus posteos.
+- Ordenar posteos: Pudiendo de ordenar los posteos por fecha y por popularidad.
 - Buscar posteos: Capacidad para buscar posteos por título o nombre del autor.
 
 #### Usuarios logeados
 
 - Logout: Los usuarios logeados podrán cerrar sesión para proteger su privacidad.
 - Ver lista de todos los posts: Acceso a una lista con todos los posteos publicados en el blog.
-- Ver un post: Visualización de un post específico, con opciones para dar like o seguir al autor.
+- Ver un post: Visualización de un post específico, con opciones para dar like, comentar, o seguir al autor.
+- Ver el perfil de otro usuario: Pudiendo ver sus posteos, así como ver sus seguidores y seguidos.
 - Ordenar posteos: Posibilidad de ordenar los posteos por fecha y por popularidad.
+- Filtrar posteos: Este filtro muestra solo los posteos de los usuario seguidos.
 - Buscar posteos: Capacidad para buscar posteos por título o nombre del autor.
 - Crear post: Los usuarios logeados pueden escribir y publicar sus propios posteos en el blog.
 - Ver su perfil: Acceso a información personal, como nombre de usuario, cantidad de seguidos, cantidad de seguidores y listado de los propios posteos (edición de sus datos y posteos).
